@@ -363,6 +363,24 @@ class DefaultCycleManager(models.Model):
             ["enrolled"], offset=offset, limit=limit, order="id"
         )
         entitlement_manager = self.program_id.get_manager(constants.MANAGER_ENTITLEMENT)
+        # If entitlement manager is not defined
+        if not entitlement_manager:
+            message = _("No Entitlement Manager defined.")
+            kind = "danger"
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": _("Entitlements"),
+                    "message": message,
+                    "sticky": True,
+                    "type": kind,
+                    "next": {
+                        "type": "ir.actions.act_window_close",
+                    },
+                },
+            }
+
         entitlement_manager.prepare_entitlements(cycle, beneficiaries)
 
         if do_count:

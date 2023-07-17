@@ -251,7 +251,10 @@ class G2PCycle(models.Model):
 
     def prepare_entitlement(self):
         # 1. Prepare the entitlement of the beneficiaries using entitlement_manager.prepare_entitlements()
-        self.program_id.get_manager(constants.MANAGER_CYCLE).prepare_entitlements(self)
+        manager = self.program_id.get_manager(constants.MANAGER_CYCLE)
+        if not manager:
+            return self.display_notification(manager="Cycle", title="Cycle")
+        manager.prepare_entitlements(self)
 
     def prepare_payment(self):
         # 1. Issue the payment of the beneficiaries using payment_manager.prepare_payments()
@@ -295,11 +298,9 @@ class G2PCycle(models.Model):
         pass
 
     def open_cycle_form(self):
-        is_cash_entitlement = self.program_id.get_manager(
-            constants.MANAGER_ENTITLEMENT
-        ).IS_CASH_ENTITLEMENT
+        manager = self.program_id.get_manager(constants.MANAGER_ENTITLEMENT)
         hide_cash = True
-        if is_cash_entitlement:
+        if manager is not None and manager.IS_CASH_ENTITLEMENT:
             hide_cash = False
 
         return {
@@ -361,3 +362,21 @@ class G2PCycle(models.Model):
         jobs = self.env["queue.job"].search([("model_name", "like", self._name)])
         related_jobs = jobs.filtered(lambda r: self in r.args[0])
         return [("id", "in", related_jobs.ids)]
+
+    def display_notification(self, manager, title):
+        message = _("No %s Manager defined.") % manager
+        kind = "danger"
+
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "title": _(title),
+                "message": message,
+                "sticky": False,
+                "type": kind,
+                "next": {
+                    "type": "ir.actions.act_window_close",
+                },
+            },
+        }

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_manual_entitlement_inkind_wizard_form" model="ir.ui.view">
+        <field name="name">view_manual_entitlement_inkind_wizard_form</field>
+        <field name="model">g2p.manual.entitlement.inkind.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="step1,step2" />
+                </header>
+                <sheet>
+                     <!-- STEP 1 -->
+                    <field name="cycle_id" invisible="1" />
+                    <div invisible="state == 'step2'">
+                        <field name="program_membership_ids" nolabel="1" colspan="2">
+                            <tree>
+                                <field name="partner_id" />
+                                <field name="enrollment_date" />
+                            </tree>
+                        </field>
+                    </div>
+                    <!-- STEP 2 -->
+                    <div invisible="state == 'step1'">
+                        <group>
+                            <group>
+                                <field
+                                    name="manage_inventory"
+                                    string="Manage stock movements (inventory):"
+                                    widget="boolean_toggle"
+                                />
+                            </group>
+                            <group>
+                                <field
+                                    name="evaluate_single_item"
+                                    string="Evaluate one item:"
+                                    widget="boolean_toggle"
+                                />
+                            </group>
+                        </group>
+                        <group>
+                            <field name="products_item_ids" nolabel="1" colspan="2">
+                                <tree>
+                                    <field name="product_id" />
+                                    <field name="qty" />
+                                    <field name="uom_id" />
+                                </tree>
+                                <form string="Entitlement Item">
+                                <group colspan="4" col="4">
+                                    <field
+                                            name="product_id"
+                                            options="{'no_open':True,'no_create':True,'no_create_edit':True}"
+                                            colspan="4"
+                                        />
+                                </group>
+                                <group colspan="4" col="4">
+                                    <group colspan="2">
+                                        <field name="qty" />
+                                    </group>
+                                    <group colspan="2">
+                                        <field
+                                                name="uom_id"
+                                                options="{'no_open':True,'no_create':True,'no_create_edit':True}"
+                                            />
+                                    </group>
+                                </group>
+                                <group colspan="4" col="4">
+                                    <field
+                                            name="condition"
+                                            colspan="4"
+                                            widget="domain"
+                                            options="{'model': 'res.partner'}"
+                                        />
+                                </group>
+                                <group colspan="4" col="4">
+                                    <group colspan="2">
+                                        <field
+                                                name="multiplier_field"
+                                                options="{'no_open':True,'no_create':True,'no_create_edit':True}"
+                                            />
+                                    </group>
+                                    <group colspan="2">
+                                        <field name="max_multiplier" />
+                                    </group>
+                                </group>
+                            </form>
+                            </field>
+                        </group>
+                        <group
+                            colspan="4"
+                            col="4"
+                            string="Inventory Settings"
+                            invisible="not manage_inventory"
+                        >
+                            <field
+                                name="warehouse_id"
+                                options="{'no_open':True,'no_create':True,'no_create_edit':True}"
+                            />
+                            <field name="company_id" invisible="1" options="{'no_open':True}" />
+                        </group>
+                    </div>
+                </sheet>
+                <footer>
+                     <button
+                        name="next_step"
+                        string="Next"
+                        icon="fa-chevron-right"
+                        title="Next step"
+                        type="object"
+                        class="btn-warning"
+                        invisible="state == 'step2'"
+                    />
+                    <button
+                        name="prev_step"
+                        string="Back"
+                        title="Prev step"
+                        icon="fa-chevron-left"
+                        type="object"
+                        class="btn-warning"
+                        invisible="state =='step1'"
+                    />
+                    <button
+                        name="create_entitlement"
+                        string="Create"
+                        title="Create Entitlement"
+                        invisible="state =='step1'"
+                        type="object"
+                        class="oe_highlight btn-primary"
+                    />
+                    <button string="Cancel" class="btn-secondary" special="cancel" title="Cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

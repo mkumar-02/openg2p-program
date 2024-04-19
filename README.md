@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 [g2p_entitlement_differential](g2p_entitlement_differential/) | 17.0.1.0.0 |  | OpenG2P Entitlement: Differential
 [g2p_entitlement_in_kind](g2p_entitlement_in_kind/) | 17.0.1.0.0 |  | OpenG2P Entitlement: In-Kind
 [g2p_entitlement_voucher](g2p_entitlement_voucher/) | 17.0.1.0.0 |  | OpenG2P Entitlement: Voucher
+[g2p_manual_entitlement_in_kind](g2p_manual_entitlement_in_kind/) | 17.0.1.0.0 |  | OpenG2P Manual Entitlement: In-Kind
 [g2p_payment_cash](g2p_payment_cash/) | 17.0.1.0.0 |  | OpenG2P Program Payment: Cash
 [g2p_payment_files](g2p_payment_files/) | 17.0.1.0.0 |  | OpenG2P Program Payments: In Files
 [g2p_payment_g2p_connect](g2p_payment_g2p_connect/) | 17.0.1.0.0 |  | OpenG2P Program Payment: G2P Connect Payment Manager
